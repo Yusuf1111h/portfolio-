@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhammad Yusuf | Portfolio</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { 
+            background: #030712; 
+            color: #f3f4f6; 
+            overflow-x: hidden; 
+            padding-bottom: 60px; 
+        }
+
+        header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 20px; z-index: 100;
+            background: rgba(3, 7, 18, 0.85); 
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .logo { font-size: 16px; font-weight: 800; color: #38bdf8; }
+        .controls { display: flex; gap: 8px; }
+        .btn {
+            background: rgba(30, 41, 59, 0.6); color: #38bdf8; 
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .btn:hover { background: #38bdf8; color: #000; }
+        .btn-dark { background: rgba(15, 23, 42, 0.8); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1); }
+
+        .hero { display: flex; flex-direction: column; align-items: center; padding-top: 65px; }
+        #canvas-container { width: 100%; height: 320px; cursor: grab; }
+
+        .container { max-width: 480px; margin: 0 auto; padding: 0 16px; }
+        .section-title { 
+            margin: 28px 0 14px; text-align: center; font-size: 15px; font-weight: 800; 
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        .card {
+            background: rgba(17, 24, 39, 0.6); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 16px;
+            padding: 20px; margin-bottom: 16px; font-size: 13.5px; color: #9ca3af;
+            backdrop-filter: blur(8px);
+        }
+
+        .skill-item { margin-bottom: 14px; }
+        .skill-info { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: #e5e7eb; margin-bottom: 6px; }
+        .progress-bar { width: 100%; height: 6px; background: rgba(31, 41, 55, 0.8); border-radius: 10px; overflow: hidden; }
+        .progress { height: 100%; background: linear-gradient(90deg, #c084fc, #a855f7); border-radius: 10px; }
+
+        .hobby-item { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .hobby-icon { 
+            font-size: 18px; background: rgba(250, 204, 21, 0.1); 
+            padding: 8px; border-radius: 10px; border: 1px solid rgba(250, 204, 21, 0.2); 
+        }
+
+        .project-actions { display: flex; gap: 10px; margin-top: 14px; }
+        .btn-sm {
+            padding: 8px 14px; border-radius: 8px; font-size: 11px; text-decoration: none;
+            font-weight: 700; cursor: pointer; border: none; transition: 0.3s;
+        }
+        .btn-primary { background: #38bdf8; color: #030712; }
+        .btn-outline { background: transparent; color: #e5e7eb; border: 1px solid rgba(255, 255, 255, 0.15); }
+
+        input, textarea {
+            width: 100%; padding: 12px; margin-bottom: 10px;
+            background: rgba(3, 7, 18, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px;
+            color: #fff; font-size: 12px; outline: none;
+        }
+        input:focus, textarea:focus { border-color: #38bdf8; }
+        .submit-btn {
+            width: 100%; padding: 12px; background: linear-gradient(90deg, #38bdf8, #818cf8); color: #000;
+            border: none; border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 12px;
+        }
+
+        .social-links { display: flex; gap: 10px; margin-top: 14px; }
+        .social-btn {
+            flex: 1; text-align: center; background: rgba(30, 41, 59, 0.4); color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.2); text-decoration: none; padding: 10px;
+            border-radius: 10px; font-weight: 700; font-size: 12px;
+        }
+
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center; padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .modal-content {
+            background: #0f172a; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 24px;
+            max-width: 400px; width: 100%; position: relative;
+        }
+        .close-btn { position: absolute; top: 12px; right: 18px; font-size: 22px; cursor: pointer; color: #64748b; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Muhammad Yusuf</div>
+        <div class="controls">
+            <button class="btn btn-dark" id="themeToggle">🌙 Chiroq: ON</button>
+            <button class="btn" id="musicToggle">🎵 Music: OFF</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div id="canvas-container"></div>
+    </section>
+
+    <div class="container">
+        
+        <!-- O'ZIM HAQIMDA -->
+        <h3 class="section-title" style="color: #38bdf8;" data-aos="fade-up">👤 O'ZIM HAQIMDA</h3>
+        <div class="card" data-aos="fade-up">
+            <p style="margin-bottom: 8px;"><strong style="color: #f3f4f6;">Ism-sharif:</strong> Muhammad Yusuf</p>
+            <p style="margin-bottom: 8px;"><strong style="color: #f3f4f6;">Asosiy til:</strong> C Dasturlash Tili</p>
+            <p style="margin-bottom: 8px;"><strong style="color: #f3f4f6;">Yo'nalish:</strong> Junior C Developer & AI Student</p>
+            <p><strong style="color: #f3f4f6;">Maqsadim:</strong> C tilida mantiqiy algoritmlar va sun'iy intellekt tizimlarini chuqur o'rganish.</p>
+            
+            <div class="social-links">
+                <a href="https://t.me/username" target="_blank" class="social-btn">📱 Telegram</a>
+                <a href="https://github.com/username" target="_blank" class="social-btn">💻 GitHub</a>
+            </div>
+        </div>
+
+        <!-- KO'NIKMALAR -->
+        <h3 class="section-title" style="color: #c084fc;" data-aos="fade-up">📊 KO'NIKMALARIM</h3>
+        <div class="card" data-aos="fade-up">
+            <div class="skill-item">
+                <div class="skill-info"><span>C Dasturlash Tili</span><span>75%</span></div>
+                <div class="progress-bar"><div class="progress" style="width: 75%;"></div></div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-info"><span>Algoritmlar & Mantiq</span><span>70%</span></div>
+                <div class="progress-bar"><div class="progress" style="width: 70%;"></div></div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-info"><span>HTML / CSS (Veb-dizayn)</span><span>50%</span></div>
+                <div class="progress-bar"><div class="progress" style="width: 50%;"></div></div>
+            </div>
+            <div class="skill-item">
+                <div class="skill-info"><span>JavaScript / Node.js</span><span>35%</span></div>
+                <div class="progress-bar"><div class="progress" style="width: 35%;"></div></div>
+            </div>
+        </div>
+
+        <!-- O'QISH VA QIZIQISHLARIM -->
+        <h3 class="section-title" style="color: #facc15;" data-aos="fade-up">🎓 O'QISH VA QIZIQISHLARIM</h3>
+        <div class="card" data-aos="fade-up">
+            <div class="hobby-item">
+                <span class="hobby-icon">💻</span>
+                <div><strong style="color: #f3f4f6;">Dasturlash va C tili:</strong> Dastur mantig'i, algoritmlar yechish hamda tizimli dasturlashga juda qiziqaman.</div>
+            </div>
+            <div class="hobby-item">
+                <span class="hobby-icon">🤖</span>
+                <div><strong style="color: #f3f4f6;">Sun'iy Intellekt:</strong> AI va Neyron tarmoqlarini o'rganish hamda ularni amaliyotda qo'llash.</div>
+            </div>
+            <div class="hobby-item">
+                <span class="hobby-icon">📚</span>
+                <div><strong style="color: #f3f4f6;">O'z ustimda ishlash:</strong> IT bo'yicha kitoblar o'qish, yangi texnologiyalar va koding tajribasini oshirish.</div>
+            </div>
+        </div>
+
+        <!-- LOYIHALAR -->
+        <h3 class="section-title" style="color: #f43f5e;" data-aos="fade-up">🚀 LOYIHALARIM</h3>
+        <div class="card" data-aos="fade-up">
+            <div style="font-size: 15px; font-weight: 700; color: #38bdf8; margin-bottom: 6px;">🤖 AI Ustoz & Do'st</div>
+            <div style="font-size: 12.5px; color: #9ca3af; margin-bottom: 10px;">C tili va suhbat uchun Gemini API va Node.js orqali yaratilgan intellektual yordamchi.</div>
+            <div class="project-actions">
+                <button class="btn-sm btn-primary" onclick="openModal()">Batafsil 🔍</button>
+                <a href="http://127.0.0.1:3000" target="_blank" class="btn-sm btn-outline">Live Demo 🔗</a>
+            </div>
+        </div>
+
+        <!-- BOG'LANISH FORMASI -->
+        <h3 class="section-title" style="color: #4ade80;" data-aos="fade-up">📩 BOG'LANISH</h3>
+        <div class="card" data-aos="fade-up">
+            <form id="contactForm">
+                <input type="text" id="name" placeholder="Ismingiz" required>
+                <input type="text" id="contact" placeholder="Telegram yoki Telefoningiz" required>
+                <textarea id="message" rows="3" placeholder="Xabaringiz matni..." required></textarea>
+                <button type="submit" class="submit-btn">Yuborish 🚀</button>
+            </form>
+            <div id="formStatus" style="margin-top: 10px; font-size: 12px; text-align: center;"></div>
+        </div>
+
+    </div>
+
+    <!-- MODAL POPUP -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3 style="color: #38bdf8; margin-bottom: 10px;">🤖 AI Ustoz & Do'st</h3>
+            <p style="font-size: 13px; color: #94a3b8; line-height: 1.6; margin-bottom: 16px;">
+                Ushbu loyiha Node.js va Google Gemini API yordamida yaratilgan. U foydalanuvchiga C dasturlash tili bo'yicha mantiqiy savollarga javob beradi va o'quv jarayonida yordam beradi.
+            </p>
+            <a href="http://127.0.0.1:3000" target="_blank" class="btn-sm btn-primary" style="display: block; text-align: center;">Loyiha sahifasiga o'tish</a>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"></audio>
+
+    <script>
+        AOS.init({ duration: 800, once: true });
+
+        // THREE.JS 3D SCENE SETUP
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.set(3.8, 2.8, 4.8);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxPolarAngle = Math.PI / 2.1;
+
+        const ambientLight = new THREE.AmbientLight(0x0f172a, 1.5);
+        scene.add(ambientLight);
+
+        const blueNeon = new THREE.PointLight(0x38bdf8, 6, 10);
+        blueNeon.position.set(0, 1.2, 0);
+        scene.add(blueNeon);
+
+        const purpleNeon = new THREE.PointLight(0xc084fc, 4, 8);
+        purpleNeon.position.set(-1.5, 1, -1);
+        scene.add(purpleNeon);
+
+        const roomGroup = new THREE.Group();
+
+        // 1. POL (Xona pol qismi)
+        const floorMat = new THREE.MeshStandardMaterial({ color: 0x0b0f19, roughness: 0.2, metalness: 0.8 });
+        const floor = new THREE.Mesh(new THREE.BoxGeometry(3.5, 0.1, 3.5), floorMat);
+        floor.position.y = -0.6;
+        roomGroup.add(floor);
+
+        // 2. STOL
+        const deskMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.3 });
+        const desk = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.08, 1), deskMat);
+        desk.position.set(0, -0.1, -0.4);
+        roomGroup.add(desk);
+
+        // Stol oyoqlari
+        const legMat = new THREE.MeshStandardMaterial({ color: 0x1f2937 });
+        const leg1 = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.5), legMat);
+        leg1.position.set(-0.8, -0.35, -0.8);
+        const leg2 = leg1.clone(); leg2.position.set(0.8, -0.35, -0.8);
+        const leg3 = leg1.clone(); leg3.position.set(-0.8, -0.35, 0);
+        const leg4 = leg1.clone(); leg4.position.set(0.8, -0.35, 0);
+        roomGroup.add(leg1, leg2, leg3, leg4);
+
+        // 3. MONITOR (Nurlanuvchi ekran)
+        const screenMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, emissive: 0x0284c7, emissiveIntensity: 0.8 });
+        const screen = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.7, 0.04), screenMat);
+        screen.position.set(0, 0.4, -0.7);
+        roomGroup.add(screen);
+
+        // 4. STUL (Kreslo - O'rindiq, Suyanchiq va Oyoqlari)
+        const chairGroup = new THREE.Group();
+        const chairMat = new THREE.MeshStandardMaterial({ color: 0x2563eb, roughness: 0.5 }); // Ko'k neon stul
+        const baseMat = new THREE.MeshStandardMaterial({ color: 0x111827, metalness: 0.8 });
+
+        // O'rindiq (Seat)
+        const seat = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.08, 0.6), chairMat);
+        seat.position.y = -0.15;
+        chairGroup.add(seat);
+
+        // Suyanchiq (Backrest)
+        const backrest = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.7, 0.08), chairMat);
+        backrest.position.set(0, 0.22, 0.26);
+        chairGroup.add(backrest);
+
+        // Stul ustuni va mantiqiy g'ildiraklar
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.35), baseMat);
+        pole.position.y = -0.35;
+        chairGroup.add(pole);
+
+        const chairBase = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.05), baseMat);
+        chairBase.position.y = -0.52;
+        chairGroup.add(chairBase);
+
+        // Stulni stol qarshisiga joylashtirish
+        chairGroup.position.set(0, 0, 0.3);
+        roomGroup.add(chairGroup);
+
+        scene.add(roomGroup);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // MUSIQA
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicToggle');
+        let isMusicPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (isMusicPlaying) {
+                music.pause();
+                musicBtn.textContent = '🎵 Music: OFF';
+            } else {
+                music.play().then(() => {
+                    musicBtn.textContent = '🎶 Music: ON';
+                });
+            }
+            isMusicPlaying = !isMusicPlaying;
+        });
+
+        // CHIROQ
+        const themeBtn = document.getElementById('themeToggle');
+        let isLightOn = true;
+
+        themeBtn.addEventListener('click', () => {
+            isLightOn = !isLightOn;
+            if (isLightOn) {
+                ambientLight.intensity = 1.5;
+                blueNeon.intensity = 6;
+                themeBtn.textContent = '🌙 Chiroq: ON';
+            } else {
+                ambientLight.intensity = 0.2;
+                blueNeon.intensity = 0.8;
+                themeBtn.textContent = '☀️ Chiroq: OFF';
+            }
+        });
+
+        function openModal() { document.getElementById('projectModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('projectModal').style.display = 'none'; }
+
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const status = document.getElementById('formStatus');
+            status.style.color = '#facc15';
+            status.textContent = 'Yuborilmoqda...';
+            setTimeout(() => {
+                status.style.color = '#4ade80';
+                status.textContent = 'Rahmat! Xabaringiz qabul qilindi. 🚀';
+                this.reset();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
+
